@@ -98,3 +98,17 @@ spec:
       workspaces:
         - name: source
           workspace: pfs-shared-data
+    - name: gitops
+      runAfter:
+        - test-deploy
+      taskRef:
+        kind: Task
+        name: gitops
+      params:
+        - name: docker-image
+          value: "$(params.image-repo):$(tasks.clone-repository.results.commit)"
+        - name: gitops-repo
+          value: "https://github.com/matejocovskyibm/express-sample-app-gitops"
+      workspaces:
+        - name: output
+          workspace: pfs-shared-data
